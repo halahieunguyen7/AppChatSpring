@@ -1,16 +1,13 @@
-FROM maven:3.9.6-eclipse-temurin-17 AS build
+# Dockerfile.dev
+FROM maven:3.9-eclipse-temurin-17
 
-# Set workdir
 WORKDIR /app
 
-# Copy pom.xml trước
-COPY pom.xml .
+# chạy container với root hoặc UID/GID host
+USER 1000:1000
 
-# Download dependencies để cache layer
-RUN mvn dependency:go-offline -B
+# Mount source code từ host, target tạo trong container
+VOLUME /app
 
-# Copy toàn bộ source code
-COPY src ./src
-
-# Chạy Spring Boot (dev mode)
-CMD ["mvn", "spring-boot:run"]
+# CMD Maven run với fork = false
+CMD ["mvn", "spring-boot:run", "-Dspring-boot.run.fork=false"]

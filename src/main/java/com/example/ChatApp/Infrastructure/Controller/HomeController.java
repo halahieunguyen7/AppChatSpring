@@ -1,4 +1,4 @@
-package com.example.ChatApp.Controller;
+package com.example.ChatApp.Infrastructure.Controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -8,6 +8,6 @@ public class HomeController
 {
     @GetMapping("/")
     public String home() {
-        return "Hello ChatA12pp21!";
+        return "Hello Fuck2!";
     }
 }
