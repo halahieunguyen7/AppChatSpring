@@ -10,4 +10,4 @@ USER 1000:1000
 VOLUME /app
 
 # CMD Maven run với fork = false
-CMD ["mvn", "spring-boot:run", "-Dspring-boot.run.fork=false"]
+CMD ["mvn", "spring-boot:run", "-Dspring-boot.run.fork=false", "-Dspring-boot.run.profiles=docker"]
