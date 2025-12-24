@@ -2,88 +2,125 @@ package com.example.ChatApp.Domain.Conversation.Model;
 
 import com.example.ChatApp.Domain.Conversation.Event.MessageSentEvent;
 import com.example.ChatApp.Domain.Conversation.Exception.ChatDomainException;
-import com.example.ChatApp.Domain.Conversation.ValueObject.ConversationId;
-import com.example.ChatApp.Domain.Conversation.ValueObject.MessageContent;
-import com.example.ChatApp.Domain.Conversation.ValueObject.Participant;
-import com.example.ChatApp.Domain.Conversation.ValueObject.UserId;
+import com.example.ChatApp.Domain.Conversation.ValueObject.*;
+import lombok.Getter;
 
+import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Conversation {
-
+    @Getter
     private final ConversationId id;
+    @Getter
+    private final ConversationType type;
+    @Getter
     private final Set<Participant> participants;
-    private final List<Message> messages;
-
-    // Domain events (optional but rất nên)
-    private final List<Object> domainEvents = new ArrayList<>();
+    @Getter
+    private String title; // only for GROUP
+    @Getter
+    private MessageSummary lastMessage;
+    @Getter
+    private final Instant createdAt;
 
     private Conversation(
             ConversationId id,
+            ConversationType type,
             Set<Participant> participants,
-            List<Message> messages
+            String title,
+            Instant createdAt
     ) {
-        if (participants == null || participants.size() < 2) {
-            throw new ChatDomainException("Conversation must have at least 2 participants");
-        }
         this.id = id;
+        this.type = type;
         this.participants = participants;
-        this.messages = messages;
+        this.title = title;
+        this.createdAt = createdAt;
     }
 
-    /* ---------- Factory ---------- */
+    /* ========== Factory ========== */
 
-    public static Conversation create(Set<UserId> userIds) {
-        Set<Participant> participants = userIds.stream()
-                .map(Participant::new)
-                .collect(Collectors.toSet());
+    public static Conversation createDirect(
+            ConversationId id,
+            Participant user1,
+            Participant user2
+    ) {
+        return new Conversation(
+                id,
+                ConversationType.DIRECT,
+                Set.of(user1, user2),
+                null,
+                Instant.now()
+        );
+    }
+
+    public static Conversation of(
+            ConversationId id,
+            ConversationType type,
+            String title,
+            Set<Participant> members,
+            Instant createdAt
+    ) {
+        return new Conversation(
+                id,
+                type,
+                members,
+                title,
+                createdAt
+        );
+    }
+
+    public static Conversation createGroup(
+            ConversationId id,
+            String title,
+            Participant owner,
+            Set<Participant> members
+    ) {
+        if (!members.contains(owner)) {
+            throw new ChatDomainException("Owner must be participant");
+        }
 
         return new Conversation(
-                ConversationId.newId(),
-                participants,
-                new ArrayList<>()
+                id,
+                ConversationType.GROUP,
+                members,
+                title,
+                Instant.now()
         );
     }
 
-    /* ---------- Business Methods ---------- */
+    /* ========== Domain behaviors ========== */
 
-    public void sendMessage(UserId senderId, MessageContent content) {
-        validateParticipant(senderId);
-
-        Message message = Message.create(senderId, content);
-        messages.add(message);
-
-        domainEvents.add(
-                new MessageSentEvent(
-                        id.value(),
-                        senderId.value(),
-                        content.value(),
-                        message.getSentAt()
-                )
-        );
-    }
-
-    /* ---------- Rules ---------- */
-
-    private void validateParticipant(UserId senderId) {
-        boolean exists = participants.stream()
-                .anyMatch(p -> p.userId().equals(senderId));
-
-        if (!exists) {
-            throw new ChatDomainException("User is not a participant of this conversation");
+    public void validateSender(UserId senderId) {
+        if (!isParticipant(senderId)) {
+            throw new ChatDomainException("User is not a participant");
         }
     }
 
-    /* ---------- Getters ---------- */
+    public void updateLastMessage(MessageSummary summary) {
+        this.lastMessage = summary;
+    }
 
-    public ConversationId getId() { return id; }
-    public Set<Participant> getParticipants() { return Collections.unmodifiableSet(participants); }
-    public List<Message> getMessages() { return Collections.unmodifiableList(messages); }
+    public void renameGroup(String newTitle, UserId requester) {
+        Participant p = getParticipant(requester);
 
-    public List<Object> pullDomainEvents() {
-        List<Object> events = new ArrayList<>(domainEvents);
-        domainEvents.clear();
-        return events;
+        if (!p.isAdmin()) {
+            throw new ChatDomainException("Only admin can rename group");
+        }
+
+        this.title = newTitle;
+    }
+
+    /* ========== Helpers ========== */
+
+    private boolean isParticipant(UserId userId) {
+        return participants.stream()
+                .anyMatch(p -> p.userId().equals(userId));
+    }
+
+    private Participant getParticipant(UserId userId) {
+        return participants.stream()
+                .filter(p -> p.userId().equals(userId))
+                .findFirst()
+                .orElseThrow(() -> new ChatDomainException("Not a participant"));
     }
 }

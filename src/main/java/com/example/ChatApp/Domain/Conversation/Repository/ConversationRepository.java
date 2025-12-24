@@ -11,6 +11,4 @@ public interface  ConversationRepository {
     Optional<Conversation> findById(ConversationId id);
 
     void save(Conversation conversation);
-
-    boolean existsByParticipants(Set<UserId> userIds);
 }

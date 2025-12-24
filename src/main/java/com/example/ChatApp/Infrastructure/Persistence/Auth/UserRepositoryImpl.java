@@ -4,7 +4,7 @@ import com.example.ChatApp.Domain.Auth.Model.User;
 import com.example.ChatApp.Domain.Auth.Model.UserId;
 import com.example.ChatApp.Domain.Auth.Repository.UserRepository;
 import com.example.ChatApp.Domain.Auth.ValueObject.Email;
-import com.example.ChatApp.Infrastructure.Mapper.UserMapper;
+import com.example.ChatApp.Infrastructure.Mapper.Auth.UserMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

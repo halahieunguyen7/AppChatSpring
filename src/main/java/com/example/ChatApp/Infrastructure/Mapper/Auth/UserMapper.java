@@ -1,4 +1,4 @@
-package com.example.ChatApp.Infrastructure.Mapper;
+package com.example.ChatApp.Infrastructure.Mapper.Auth;
 
 import com.example.ChatApp.Domain.Auth.Model.PasswordHash;
 import com.example.ChatApp.Domain.Auth.Model.User;

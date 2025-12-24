@@ -3,7 +3,7 @@ package com.example.ChatApp.Infrastructure.Persistence.Auth;
 import com.example.ChatApp.Domain.Auth.Model.RefreshToken;
 import com.example.ChatApp.Domain.Auth.Model.UserId;
 import com.example.ChatApp.Domain.Auth.Repository.RefreshTokenRepository;
-import com.example.ChatApp.Infrastructure.Mapper.RefreshTokenMapper;
+import com.example.ChatApp.Infrastructure.Mapper.Auth.RefreshTokenMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
