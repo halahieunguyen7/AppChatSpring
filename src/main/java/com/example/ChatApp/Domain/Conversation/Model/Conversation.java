@@ -1,13 +1,14 @@
 package com.example.ChatApp.Domain.Conversation.Model;
 
-import com.example.ChatApp.Domain.Conversation.Event.MessageSentEvent;
 import com.example.ChatApp.Domain.Conversation.Exception.ChatDomainException;
-import com.example.ChatApp.Domain.Conversation.ValueObject.*;
+import com.example.ChatApp.Domain.Conversation.ValueObject.ConversationId;
+import com.example.ChatApp.Domain.Conversation.ValueObject.ConversationType;
+import com.example.ChatApp.Domain.Conversation.ValueObject.Participant;
+import com.example.ChatApp.Domain.Conversation.ValueObject.UserId;
 import lombok.Getter;
 
 import java.time.Instant;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 public class Conversation {
     @Getter
