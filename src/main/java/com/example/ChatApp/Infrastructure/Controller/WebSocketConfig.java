@@ -28,7 +28,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry
                 .addEndpoint("/ws/chat")
                 .addInterceptors(new JwtHandshakeInterceptor())
-                .setAllowedOriginPatterns("*");
+                .setAllowedOrigins(
+                        "http://chat.localhost",
+                        "http://localhost:3000"
+                )
+                .setAllowedOriginPatterns("*")
+                .withSockJS();
     }
 
     @Override

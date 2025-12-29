@@ -27,7 +27,13 @@ public class SecurityConfig {
                         s.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers(
+                                "/",                // 👈 BẮT BUỘC
+                                "/index.html",
+                                "/favicon.ico",
+                                "/auth/**",
+                                "/ws/**"            // 👈 nếu có WebSocket
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(

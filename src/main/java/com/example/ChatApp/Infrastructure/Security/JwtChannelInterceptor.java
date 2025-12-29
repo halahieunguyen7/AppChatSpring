@@ -1,6 +1,7 @@
 package com.example.ChatApp.Infrastructure.Security;
 
 import io.jsonwebtoken.Claims;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.stomp.StompCommand;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Slf4j
 @Component
 public class JwtChannelInterceptor implements ChannelInterceptor {
 
@@ -31,21 +33,42 @@ public class JwtChannelInterceptor implements ChannelInterceptor {
                 );
 
         if (StompCommand.CONNECT.equals(accessor.getCommand())) {
-            String token = (String) accessor
-                    .getSessionAttributes()
-                    .get("jwt");
+            try {
+                String authHeader =
+                        accessor.getFirstNativeHeader("Authorization");
 
-            Claims claims = jwtProvider.parseToken(token);
-            String userId = claims.getSubject();
+                log.info(authHeader);
+                if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                    return message; // ⚠️ không throw, không return null
+                }
 
-            Authentication auth =
-                    new UsernamePasswordAuthenticationToken(
-                            userId,
-                            null,
-                            List.of()
-                    );
+                String token = authHeader.substring(7);
+                log.info(token);
 
-            accessor.setUser(auth);
+                String userId = "";
+                Claims claims = jwtProvider.parseToken(token);
+                userId = claims.getSubject();
+                log.info("userId = {}", userId);
+                Authentication auth =
+                        new UsernamePasswordAuthenticationToken(
+                                userId,
+                                null,
+                                List.of()
+                        );
+
+                accessor.setUser(auth);
+                
+                StompCommand command = accessor.getCommand();
+                log.info(
+                        "STOMP command={}, sessionId={}, destination={}, user={}",
+                        command,
+                        accessor.getSessionId(),
+                        accessor.getDestination(),
+                        accessor.getUser() != null ? accessor.getUser().getName() : "ANONYMOUS"
+                );
+            } catch (Exception e) {
+                log.error("JWT parse failed", e);
+            }
         }
 
         return message;

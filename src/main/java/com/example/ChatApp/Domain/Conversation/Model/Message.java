@@ -38,4 +38,14 @@ public class Message {
                 Instant.now()
         );
     }
+
+    public static Message of(MessageId messageId, UserId senderId, ConversationId conversationId, MessageContent content, Instant sentAt) {
+        return new Message(
+                messageId,
+                conversationId,
+                senderId,
+                content,
+                sentAt
+        );
+    }
 }
