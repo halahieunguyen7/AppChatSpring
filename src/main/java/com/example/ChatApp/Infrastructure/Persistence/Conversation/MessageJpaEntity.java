@@ -30,6 +30,7 @@ public class MessageJpaEntity {
     private String content;
 
     @Getter
+    @Column(name = "sent_at")
     private Instant sentAt;
 
     protected MessageJpaEntity() {}

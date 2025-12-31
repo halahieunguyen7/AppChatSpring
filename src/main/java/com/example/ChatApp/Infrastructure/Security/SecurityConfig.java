@@ -28,6 +28,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
+                                "/upload-image",
                                 "/",                // 👈 BẮT BUỘC
                                 "/index.html",
                                 "/favicon.ico",

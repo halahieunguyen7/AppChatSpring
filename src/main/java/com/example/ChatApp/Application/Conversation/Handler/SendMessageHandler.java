@@ -1,6 +1,7 @@
 package com.example.ChatApp.Application.Conversation.Handler;
 
 import com.example.ChatApp.Application.Conversation.Command.SendMessageCommand;
+import com.example.ChatApp.Application.Conversation.DTO.ChatMessageResponse;
 import com.example.ChatApp.Domain.Conversation.Exception.ChatDomainException;
 import com.example.ChatApp.Domain.Conversation.Model.Conversation;
 import com.example.ChatApp.Domain.Conversation.Model.Message;
@@ -10,6 +11,7 @@ import com.example.ChatApp.Domain.Conversation.Repository.MessageRepository;
 import com.example.ChatApp.Domain.Conversation.ValueObject.MessageContent;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -20,6 +22,7 @@ public class SendMessageHandler {
 
     private final MessageRepository messageRepository;
     private final ConversationRepository conversationRepository;
+    private final SimpMessagingTemplate messagingTemplate;
 
     @Transactional
     public void handle(SendMessageCommand cmd) {
@@ -51,5 +54,13 @@ public class SendMessageHandler {
         );
 
         conversationRepository.save(conversation);
+
+        messagingTemplate.convertAndSend(
+                "/topic/chat/" + cmd.conversationId(),
+                new ChatMessageResponse(
+                        cmd.senderId().toString(),
+                        cmd.content()
+                )
+        );
     }
 }
