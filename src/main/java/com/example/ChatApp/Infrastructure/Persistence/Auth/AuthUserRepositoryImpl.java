@@ -10,11 +10,11 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public class UserRepositoryImpl implements UserRepository {
+public class AuthUserRepositoryImpl implements UserRepository {
 
-    private final UserJpaRepository jpaRepository;
+    private final AuthUserJpaRepository jpaRepository;
 
-    public UserRepositoryImpl(UserJpaRepository jpaRepository) {
+    public AuthUserRepositoryImpl(AuthUserJpaRepository jpaRepository) {
         this.jpaRepository = jpaRepository;
     }
 
