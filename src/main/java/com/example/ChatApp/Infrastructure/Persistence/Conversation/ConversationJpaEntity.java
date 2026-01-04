@@ -34,6 +34,10 @@ public class ConversationJpaEntity {
     @Getter
     private Instant createdAt;
 
+    @Setter
+    @Getter
+    private String avatar;
+
     @OneToMany(
             mappedBy = "conversation",
             cascade = CascadeType.ALL,

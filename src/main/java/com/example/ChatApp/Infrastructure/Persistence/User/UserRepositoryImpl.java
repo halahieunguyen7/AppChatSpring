@@ -1,6 +1,6 @@
 package com.example.ChatApp.Infrastructure.Persistence.User;
 
-import com.example.ChatApp.Domain.Conversation.Exception.ChatDomainException;
+import com.example.ChatApp.Domain.User.Exception.UserNotFoundException;
 import com.example.ChatApp.Domain.User.Model.User;
 import com.example.ChatApp.Domain.User.Repository.UserRepository;
 import com.example.ChatApp.Infrastructure.Mapper.User.UserMapper;
@@ -20,7 +20,7 @@ public class UserRepositoryImpl implements UserRepository {
                 .map(UserMapper::toDomain).orElse(null);
 
         if (user == null) {
-            throw new ChatDomainException("User not found");
+            throw new UserNotFoundException("User not found");
         }
 
         return user;
