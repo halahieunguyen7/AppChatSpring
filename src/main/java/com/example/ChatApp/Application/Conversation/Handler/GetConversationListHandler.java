@@ -2,7 +2,7 @@ package com.example.ChatApp.Application.Conversation.Handler;
 
 import com.example.ChatApp.Application.Conversation.DTO.ConversationItemDTO;
 import com.example.ChatApp.Application.Conversation.DTO.ConversationListDTO;
-import com.example.ChatApp.Application.Conversation.DTO.CursorCodec;
+import com.example.ChatApp.Application.Conversation.DTO.CursorConversationCodec;
 import com.example.ChatApp.Application.Conversation.Query.GetConversationListQuery;
 import com.example.ChatApp.Domain.Conversation.ReadModel.ConversationSummary;
 import com.example.ChatApp.Domain.Conversation.Repository.ConversationQueryRepository;
@@ -20,7 +20,7 @@ import java.util.List;
 public class GetConversationListHandler {
 
     private final ConversationQueryRepository conversationQueryRepository;
-    private final CursorCodec cursorCodec;
+    private final CursorConversationCodec cursorCodec;
 
     public ConversationListDTO handle(GetConversationListQuery query) {
 

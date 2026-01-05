@@ -10,7 +10,7 @@ import java.util.Base64;
 
 @Component
 @RequiredArgsConstructor
-public class CursorCodec {
+public class CursorConversationCodec {
 
     private final ObjectMapper objectMapper;
 
