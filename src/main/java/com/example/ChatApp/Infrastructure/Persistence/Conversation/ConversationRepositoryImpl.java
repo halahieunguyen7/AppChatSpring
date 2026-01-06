@@ -3,6 +3,7 @@ package com.example.ChatApp.Infrastructure.Persistence.Conversation;
 import com.example.ChatApp.Domain.Conversation.Model.Conversation;
 import com.example.ChatApp.Domain.Conversation.Repository.ConversationRepository;
 import com.example.ChatApp.Domain.Conversation.ValueObject.ConversationId;
+import com.example.ChatApp.Domain.Conversation.ValueObject.UserId;
 import com.example.ChatApp.Infrastructure.Mapper.Conversation.ConversationMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
@@ -31,5 +32,10 @@ public class ConversationRepositoryImpl
         ConversationJpaEntity entity =
                 ConversationMapper.toEntity(conversation);
         jpaRepository.save(entity);
+    }
+
+    @Override
+    public boolean existedDirect(UserId userId1, UserId userId2) {
+        return jpaRepository.findExistingDirectConversation(userId1.value(), userId2.value()) > 0 ? true : false;
     }
 }

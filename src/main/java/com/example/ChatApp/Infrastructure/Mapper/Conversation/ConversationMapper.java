@@ -8,10 +8,12 @@ import com.example.ChatApp.Domain.Conversation.ValueObject.UserId;
 import com.example.ChatApp.Infrastructure.Persistence.Conversation.ConversationJpaEntity;
 import com.example.ChatApp.Infrastructure.Persistence.Conversation.ParticipantId;
 import com.example.ChatApp.Infrastructure.Persistence.Conversation.ParticipantJpaEntity;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class ConversationMapper {
     private ConversationMapper() {
     }

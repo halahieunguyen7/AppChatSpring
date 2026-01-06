@@ -11,4 +11,6 @@ public interface  ConversationRepository {
     Optional<Conversation> findById(ConversationId id);
 
     void save(Conversation conversation);
+
+    boolean existedDirect(UserId userId1, UserId userId2);
 }

@@ -9,6 +9,7 @@ import lombok.Getter;
 
 import java.time.Instant;
 import java.util.Set;
+import java.util.UUID;
 
 public class Conversation {
     @Getter
@@ -70,7 +71,7 @@ public class Conversation {
         );
     }
 
-    public static Conversation createGroup(
+    public static Conversation createNewGroup(
             ConversationId id,
             String title,
             Participant owner,

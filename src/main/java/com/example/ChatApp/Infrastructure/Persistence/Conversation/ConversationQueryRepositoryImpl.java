@@ -1,11 +1,9 @@
 package com.example.ChatApp.Infrastructure.Persistence.Conversation;
 
 import com.example.ChatApp.Domain.Conversation.ReadModel.ConversationSummary;
+import com.example.ChatApp.Domain.Conversation.ReadModel.MemberSummary;
 import com.example.ChatApp.Domain.Conversation.Repository.ConversationQueryRepository;
-import com.example.ChatApp.Domain.Conversation.ValueObject.ConversationId;
-import com.example.ChatApp.Domain.Conversation.ValueObject.ConversationType;
-import com.example.ChatApp.Domain.Conversation.ValueObject.Cursor;
-import com.example.ChatApp.Domain.Conversation.ValueObject.UserId;
+import com.example.ChatApp.Domain.Conversation.ValueObject.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +48,26 @@ public class ConversationQueryRepositoryImpl
                 .stream()
                 .map(this::toSummary)
                 .toList();
+    }
+
+    @Override
+    public List<MemberSummary> getMemberOfConversations(String conversationId) {
+        return jpaRepository.getMemberOfConversations(
+                        conversationId
+                )
+                .stream()
+                .map(e -> new MemberSummary(
+                    e.getUserId(),
+                    ParticipantRole.valueOf(e.getRole()),
+                        e.getFullName(),
+                        e.getAvatar()
+                ))
+                .toList();
+    }
+
+    @Override
+    public boolean userInConversation(String conversationId, String userId) {
+        return jpaRepository.userInConversation(conversationId, userId) > 0;
     }
 
     private ConversationSummary toSummary(ConversationRow row) {
