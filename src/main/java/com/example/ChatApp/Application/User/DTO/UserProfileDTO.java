@@ -7,6 +7,6 @@ public record UserProfileDTO(
         String email,
         String fullName,
         String avatar,
-        Gender gender
+        int gender
 ) {
 }

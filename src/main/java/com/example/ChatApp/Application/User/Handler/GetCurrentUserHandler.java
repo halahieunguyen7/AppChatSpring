@@ -23,7 +23,7 @@ public class GetCurrentUserHandler {
                 user.getEmail().value(),
                 user.getFullName(),
                 user.getAvatar().value(),
-                user.getGender()
+                user.getGender().value
         );
     }
 }
