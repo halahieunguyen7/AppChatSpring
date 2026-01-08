@@ -1,5 +1,7 @@
 package com.example.ChatApp.Domain.Conversation.ValueObject;
 
+import com.example.ChatApp.Domain.GeneralService.UUIDv7;
+
 import java.util.Objects;
 import java.util.UUID;
 
@@ -12,7 +14,7 @@ public final class ConversationId {
     }
 
     public static ConversationId newId() {
-        return new ConversationId(UUID.randomUUID().toString());
+        return new ConversationId(UUIDv7.generateUuidV7().toString());
     }
 
     public static ConversationId of(String value) {

@@ -37,18 +37,15 @@ public class JwtChannelInterceptor implements ChannelInterceptor {
                 String authHeader =
                         accessor.getFirstNativeHeader("Authorization");
 
-                log.info(authHeader);
                 if (authHeader == null || !authHeader.startsWith("Bearer ")) {
                     return message; // ⚠️ không throw, không return null
                 }
 
                 String token = authHeader.substring(7);
-                log.info(token);
 
                 String userId = "";
                 Claims claims = jwtProvider.parseToken(token);
                 userId = claims.getSubject();
-                log.info("userId = {}", userId);
                 Authentication auth =
                         new UsernamePasswordAuthenticationToken(
                                 userId,

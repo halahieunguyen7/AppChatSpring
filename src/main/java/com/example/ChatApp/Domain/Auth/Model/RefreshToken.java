@@ -1,5 +1,7 @@
 package com.example.ChatApp.Domain.Auth.Model;
 
+import com.example.ChatApp.Domain.GeneralService.UUIDv7;
+
 import java.time.Instant;
 import java.util.UUID;
 
@@ -12,7 +14,7 @@ public class RefreshToken {
     private boolean revoked;
 
     public RefreshToken(UserId userId, String token, Instant expiresAt) {
-        this.id = UUID.randomUUID().toString();
+        this.id = UUIDv7.generateUuidV7().toString();
         this.userId = userId;
         this.token = token;
         this.expiresAt = expiresAt;

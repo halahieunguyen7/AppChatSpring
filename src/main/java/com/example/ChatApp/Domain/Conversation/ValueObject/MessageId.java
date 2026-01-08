@@ -1,8 +1,12 @@
 package com.example.ChatApp.Domain.Conversation.ValueObject;
 
+import com.example.ChatApp.Domain.GeneralService.UUIDv7;
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.Objects;
 import java.util.UUID;
 
+@Slf4j
 public final class MessageId {
 
     private final String value;
@@ -12,7 +16,7 @@ public final class MessageId {
     }
 
     public static MessageId newId() {
-        return new MessageId(UUID.randomUUID().toString());
+        return new MessageId(UUIDv7.generateUuidV7().toString());
     }
 
     public static MessageId of(String value) {

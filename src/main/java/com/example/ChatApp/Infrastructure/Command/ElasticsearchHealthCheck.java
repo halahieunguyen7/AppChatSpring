@@ -16,7 +16,7 @@ public class ElasticsearchHealthCheck {
 
     @PostConstruct
     public void check() {
-        boolean exists = operations.indexOps(IndexCoordinates.of("index_messages")).exists();
+        boolean exists = operations.indexOps(IndexCoordinates.of("indexes_messages")).exists();
         System.out.println("Elasticsearch connected: " + exists);
     }
 }

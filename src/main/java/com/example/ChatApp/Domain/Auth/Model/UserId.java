@@ -1,5 +1,7 @@
 package com.example.ChatApp.Domain.Auth.Model;
 
+import com.example.ChatApp.Domain.GeneralService.UUIDv7;
+
 import java.util.Objects;
 import java.util.UUID;
 
@@ -12,7 +14,7 @@ public final class UserId {
     }
 
     public static UserId newId() {
-        return new UserId(UUID.randomUUID().toString());
+        return new UserId(UUIDv7.generateUuidV7().toString());
     }
 
     public static UserId of(String value) {

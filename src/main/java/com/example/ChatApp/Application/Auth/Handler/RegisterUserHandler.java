@@ -30,7 +30,7 @@ public class RegisterUserHandler {
                 new Email(cmd.email()),
                 passwordEncoder.encode(cmd.password()),
                 cmd.fullName(),
-                UserStatus.ACTIVE
+                UserStatus.NOT_VERIFY
         );
 
         userRepository.save(user);

@@ -27,6 +27,18 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public User findByEmail(String id) {
+        User user = jpaRepository.findByEmail(id)
+                .map(UserMapper::toDomain).orElse(null);
+
+        if (user == null) {
+            throw new UserNotFoundException("User not found");
+        }
+
+        return user;
+    }
+
+    @Override
     public void save(User user) {
         jpaRepository.save(UserMapper.toEntity(user));
     }

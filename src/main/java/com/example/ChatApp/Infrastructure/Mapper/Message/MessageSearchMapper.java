@@ -13,7 +13,7 @@ public class MessageSearchMapper {
         doc.setConversationId(e.conversationId());
         doc.setSenderId(e.senderId());
         doc.setMessage(e.content());
-        doc.setSentAt(e.sentAt());
+        doc.setSentAt(e.sentAt().toEpochMilli());
         return doc;
     }
 }

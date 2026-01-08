@@ -8,7 +8,9 @@ import com.example.ChatApp.Application.Conversation.Handler.*;
 import com.example.ChatApp.Application.Conversation.Query.GetConversationListQuery;
 import com.example.ChatApp.Application.Conversation.Query.GetMemberOfConversationQuery;
 import com.example.ChatApp.Application.Conversation.Query.GetMessageListQuery;
+import com.example.ChatApp.Application.Conversation.Query.SearchMessageQuery;
 import com.example.ChatApp.Domain.Conversation.ReadModel.MemberSummary;
+import com.example.ChatApp.Domain.Conversation.ReadModel.MessageSearchResponse;
 import com.example.ChatApp.Domain.Conversation.ValueObject.ConversationId;
 import com.example.ChatApp.Domain.Conversation.ValueObject.UserId;
 import com.example.ChatApp.Infrastructure.Controller.Request.Conversation.CreateDirectConversationRequest;
@@ -32,6 +34,7 @@ public class ChatController {
     private final GetMemberListOfConversationHandler getMemberListOfConversationHandler;
     private final CreateGroupConversationHandler createGroupConversationHandler;
     private final CreateDirectConversationHandler createDirectConversationHandler;
+    private final SearchMessageHandler searchMessageHandler;
 
     @GetMapping("/get_list")
     public ConversationListDTO getListConversation(
@@ -106,6 +109,23 @@ public class ChatController {
                 new GetMemberOfConversationQuery(
                         principal.getName(),
                         conversationId
+                )
+        );
+    }
+
+    @GetMapping("/search")
+    public MessageSearchResponse createDirectConversation(
+            @RequestParam String conversationId,
+            @RequestParam String keyword,
+            @RequestParam(required = false) String cursor,
+            Principal principal
+    ) {
+        return searchMessageHandler.handle(
+                new SearchMessageQuery(
+                        conversationId,
+                        keyword,
+                        principal.getName(),
+                        cursor
                 )
         );
     }

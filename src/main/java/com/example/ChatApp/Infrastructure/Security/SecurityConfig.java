@@ -38,6 +38,7 @@ public class SecurityConfig {
                                 "/upload-image",
                                 "/",                // 👈 BẮT BUỘC
                                 "/index.html",
+                                "/verify",
                                 "/favicon.ico",
                                 "/auth/**",
                                 "/ws/**"            // 👈 nếu có WebSocket

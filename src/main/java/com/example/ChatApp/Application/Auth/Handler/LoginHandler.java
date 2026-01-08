@@ -5,6 +5,7 @@ import com.example.ChatApp.Application.Auth.DTO.AuthTokenDTO;
 import com.example.ChatApp.Domain.Auth.Exception.AuthDomainException;
 import com.example.ChatApp.Domain.Auth.Model.RefreshToken;
 import com.example.ChatApp.Domain.Auth.Model.User;
+import com.example.ChatApp.Domain.Auth.Model.UserStatus;
 import com.example.ChatApp.Domain.Auth.Repository.RefreshTokenRepository;
 import com.example.ChatApp.Domain.Auth.Repository.UserRepository;
 import com.example.ChatApp.Domain.Auth.Service.AccessToken;
@@ -31,10 +32,14 @@ public class LoginHandler {
     public AuthTokenDTO handle(LoginCommand cmd) {
 
         User user = userRepository.findByEmail(new Email(cmd.email()))
-                .orElseThrow(() -> new AuthDomainException("Invalid credentials"));
+                .orElseThrow(() -> new AuthDomainException("Tài khoản và mật khẩu không hợp lệ"));
 
         if (!user.passwordMatches(cmd.password(), passwordEncoder)) {
-            throw new AuthDomainException("Invalid credentials");
+            throw new AuthDomainException("Tài khoản và mật khẩu không hợp lệ");
+        }
+
+        if (user.getStatus() == UserStatus.NOT_VERIFY) {
+            throw new AuthDomainException("Tài khoản chưa xác thực, vui lòng xác thực email");
         }
 
         AccessToken accessToken = tokenGenerator.generateAccessToken(user.getId());

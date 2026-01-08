@@ -58,8 +58,10 @@ public class SendMessageHandler {
         messagingTemplate.convertAndSend(
                 "/topic/chat/" + cmd.conversationId(),
                 new ChatMessageResponse(
+                        message.getId().value(),
                         cmd.senderId().toString(),
-                        cmd.content()
+                        cmd.content(),
+                        message.getSentAt()
                 )
         );
     }
