@@ -50,18 +50,18 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
                 StandardCharsets.UTF_8
         );
 
-        log.info("""
-                HTTP REQUEST
-                Method : {}
-                Path   : {}
-                Headers: {}
-                Body   : {}
-                """,
-                request.getMethod(),
-                request.getRequestURI(),
-                extractHeaders(request),
-                body
-        );
+//        log.warn("""
+//                HTTP REQUEST
+//                Method : {}
+//                Path   : {}
+//                Headers: {}
+//                Body   : {}
+//                """,
+//                request.getMethod(),
+//                request.getRequestURI(),
+//                extractHeaders(request),
+//                body
+//        );
     }
 
     private void logResponse(
@@ -72,17 +72,17 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
                 response.getContentAsByteArray(),
                 StandardCharsets.UTF_8
         );
-
-        log.info("""
-                HTTP RESPONSE
-                Status : {}
-                Time   : {} ms
-                Body   : {}
-                """,
-                response.getStatus(),
-                System.currentTimeMillis() - start,
-                body
-        );
+//
+//        log.debug("""
+//                HTTP RESPONSE
+//                Status : {}
+//                Time   : {} ms
+//                Body   : {}
+//                """,
+//                response.getStatus(),
+//                System.currentTimeMillis() - start,
+//                body
+//        );
     }
 
     private Map<String, String> extractHeaders(HttpServletRequest request) {

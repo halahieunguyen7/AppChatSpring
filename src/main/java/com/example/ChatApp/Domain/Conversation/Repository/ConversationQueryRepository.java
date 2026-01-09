@@ -20,6 +20,10 @@ public interface ConversationQueryRepository {
             String conversationId
     );
 
+    List<String> getMemberIdsOfConversations(
+            String conversationId
+    );
+
     boolean userInConversation(
             String conversationId,
             String userId

@@ -29,7 +29,7 @@ public class MessageEventConsumer {
     private final MessageSearchIndexService messageSearchIndexService;
     private final TokenGenerator tokenGenerator;
     private final MailService mailService;
-    @KafkaListener(topics = "chatapp-chatapp.messages")
+    @KafkaListener(topics = "chatapp-chatapp.messages", containerFactory = "avroKafkaListenerContainerFactory")
     public void consume(
             ConsumerRecord<byte[], byte[]> record,
             Acknowledgment ack
@@ -80,7 +80,7 @@ public class MessageEventConsumer {
         }
     }
 
-    @KafkaListener(topics = "chatapp-chatapp.users")
+    @KafkaListener(topics = "chatapp-chatapp.users", containerFactory = "avroKafkaListenerContainerFactory")
     public void consumeUser(
             ConsumerRecord<byte[], byte[]> record,
             Acknowledgment ack
@@ -98,9 +98,15 @@ public class MessageEventConsumer {
                     converter.toConnectData(record.topic(), record.value());
 
             Struct payload = (Struct) schemaAndValue.value();
+            Struct before = payload.getStruct("before");
             Struct after = payload.getStruct("after");
 
             if (after == null) {
+                ack.acknowledge();
+                return;
+            }
+
+            if (before != null) {
                 ack.acknowledge();
                 return;
             }

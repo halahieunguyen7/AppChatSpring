@@ -57,6 +57,18 @@ interface ConversationJpaRepository
     );
 
     @Query(value = """
+                SELECT
+                    cp.user_id AS userId
+                FROM conversation_participants cp
+                JOIN users u
+                ON cp.user_id = u.id
+                WHERE cp.conversation_id = :conversationId
+            """, nativeQuery = true)
+    List<String> getMemberIdsOfConversations(
+            @Param("conversationId") String conversationId
+    );
+
+    @Query(value = """
                 SELECT EXISTS (
                     SELECT 1
                     FROM conversations c

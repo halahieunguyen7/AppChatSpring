@@ -66,6 +66,13 @@ public class ConversationQueryRepositoryImpl
     }
 
     @Override
+    public List<String> getMemberIdsOfConversations(String conversationId) {
+        return jpaRepository.getMemberIdsOfConversations(
+                        conversationId
+                );
+    }
+
+    @Override
     public boolean userInConversation(String conversationId, String userId) {
         return jpaRepository.userInConversation(conversationId, userId) > 0;
     }

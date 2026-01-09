@@ -56,7 +56,7 @@ public class JwtChannelInterceptor implements ChannelInterceptor {
                 accessor.setUser(auth);
                 
                 StompCommand command = accessor.getCommand();
-                log.info(
+                log.warn(
                         "STOMP command={}, sessionId={}, destination={}, user={}",
                         command,
                         accessor.getSessionId(),
