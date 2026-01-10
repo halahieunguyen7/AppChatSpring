@@ -4,13 +4,14 @@ import com.example.ChatApp.Application.User.DTO.UserProfileDTO;
 import com.example.ChatApp.Application.User.Query.GetCurrentUserQuery;
 import com.example.ChatApp.Domain.User.Model.User;
 import com.example.ChatApp.Domain.User.Repository.UserRepository;
+import com.example.ChatApp.Infrastructure.Persistence.ReadOnly;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@ReadOnly
 public class GetCurrentUserHandler {
 
     private final UserRepository userRepository;
