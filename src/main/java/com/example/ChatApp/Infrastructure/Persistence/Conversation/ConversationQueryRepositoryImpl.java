@@ -4,6 +4,7 @@ import com.example.ChatApp.Domain.Conversation.ReadModel.ConversationSummary;
 import com.example.ChatApp.Domain.Conversation.ReadModel.MemberSummary;
 import com.example.ChatApp.Domain.Conversation.Repository.ConversationQueryRepository;
 import com.example.ChatApp.Domain.Conversation.ValueObject.*;
+import com.example.ChatApp.Infrastructure.Persistence.ReadOnly;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,7 @@ import java.util.List;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@ReadOnly
 public class ConversationQueryRepositoryImpl
         implements ConversationQueryRepository {
 

@@ -6,13 +6,14 @@ import com.example.ChatApp.Application.User.Query.GetUserByEmailQuery;
 import com.example.ChatApp.Domain.User.Exception.UserNotFoundException;
 import com.example.ChatApp.Domain.User.Model.User;
 import com.example.ChatApp.Domain.User.Repository.UserRepository;
+import com.example.ChatApp.Infrastructure.Persistence.ReadOnly;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@ReadOnly
 public class GetUserByEmailHandle {
 
     private final UserRepository userRepository;

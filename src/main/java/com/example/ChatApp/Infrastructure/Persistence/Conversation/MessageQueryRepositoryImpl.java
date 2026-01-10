@@ -12,6 +12,7 @@ import com.example.ChatApp.Domain.User.ReadModel.UserSummary;
 import com.example.ChatApp.Domain.User.Repository.QueryUserRepository;
 import com.example.ChatApp.Domain.ValueObject.CursorBase;
 import com.example.ChatApp.Infrastructure.Elasticsearch.MessageDocument;
+import com.example.ChatApp.Infrastructure.Persistence.ReadOnly;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -34,7 +35,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@ReadOnly
 public class MessageQueryRepositoryImpl
         implements MessageQueryRepository {
 

@@ -12,6 +12,7 @@ import com.example.ChatApp.Domain.Conversation.Repository.ConversationQueryRepos
 import com.example.ChatApp.Domain.Conversation.Repository.MessageQueryRepository;
 import com.example.ChatApp.Domain.Conversation.ValueObject.Cursor;
 import com.example.ChatApp.Domain.ValueObject.CursorBase;
+import com.example.ChatApp.Infrastructure.Persistence.ReadOnly;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +22,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@ReadOnly
 public class GetMessageListHandler {
 
     private final MessageQueryRepository messageQueryRepository;

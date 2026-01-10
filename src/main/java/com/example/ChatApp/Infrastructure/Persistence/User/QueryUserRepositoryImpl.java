@@ -2,6 +2,7 @@ package com.example.ChatApp.Infrastructure.Persistence.User;
 
 import com.example.ChatApp.Domain.User.ReadModel.UserSummary;
 import com.example.ChatApp.Domain.User.Repository.QueryUserRepository;
+import com.example.ChatApp.Infrastructure.Persistence.ReadOnly;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@ReadOnly
 public class QueryUserRepositoryImpl implements QueryUserRepository {
     private final UserJpaRepository userRepository;
     private final CacheManager cacheManager;

@@ -1,42 +1,59 @@
 package com.example.ChatApp.Infrastructure.Persistence;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
+@Configuration
 public class DataSourceConfig {
+
     @Bean
-    @Primary
-    public DataSource dataSource(
-            @Qualifier("masterDataSource") DataSource master,
-            @Qualifier("slaveDataSource") DataSource slave) {
-
-        Map<Object, Object> targetDataSources = new HashMap<>();
-        targetDataSources.put(DataSourceType.MASTER, master);
-        targetDataSources.put(DataSourceType.SLAVE, slave);
-
-        RoutingDataSource routingDataSource = new RoutingDataSource();
-        routingDataSource.setTargetDataSources(targetDataSources);
-        routingDataSource.setDefaultTargetDataSource(master);
-
-        return routingDataSource;
+    @ConfigurationProperties("spring.datasource.master")
+    public DataSourceProperties masterProperties() {
+        return new DataSourceProperties();
     }
 
-    @Bean(name = "masterDataSource")
-    @ConfigurationProperties(prefix = "spring.datasource.master")
+    @Bean
     public DataSource masterDataSource() {
-        return DataSourceBuilder.create().build();
+        return masterProperties()
+                .initializeDataSourceBuilder()
+                .build();
     }
 
-    @Bean(name = "slaveDataSource")
-    @ConfigurationProperties(prefix = "spring.datasource.slave")
+    @Bean
+    @ConfigurationProperties("spring.datasource.slave")
+    public DataSourceProperties slaveProperties() {
+        return new DataSourceProperties();
+    }
+
+    @Bean
     public DataSource slaveDataSource() {
-        return DataSourceBuilder.create().build();
+        return slaveProperties()
+                .initializeDataSourceBuilder()
+                .build();
+    }
+
+    @Primary
+    @Bean
+    public DataSource routingDataSource(
+            @Qualifier("masterDataSource") DataSource master,
+            @Qualifier("slaveDataSource") DataSource slave
+    ) {
+        Map<Object, Object> targets = new HashMap<>();
+        targets.put(DataSourceType.MASTER, master);
+        targets.put(DataSourceType.SLAVE, slave);
+
+        RoutingDataSource routing = new RoutingDataSource();
+        routing.setTargetDataSources(targets);
+        routing.setDefaultTargetDataSource(master);
+        return routing;
     }
 }

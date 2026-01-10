@@ -36,12 +36,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/upload-image",
-                                "/",                // 👈 BẮT BUỘC
+                                "/",
                                 "/index.html",
                                 "/verify",
                                 "/favicon.ico",
                                 "/auth/**",
-                                "/ws/**"            // 👈 nếu có WebSocket
+                                "/ws/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
